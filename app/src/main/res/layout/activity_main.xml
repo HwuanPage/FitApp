@@ -2,13 +2,40 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/txtstepcount"
+        android:text="0"
+        android:textSize="20dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="페르소나 로얄보다는 스크램블이져ㅇㅈ하십니까? 예 ㅇㅈ합니다"
-        android:textSize="30dp"
+        android:textAlignment="center"
         ></TextView>
+    <Button
+        android:id="@+id/btnsetpush"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/date_set"
+        android:textSize="20dp"
+        android:onClick="onClick"
+        ></Button>
+    <TextView
+        android:id="@+id/txttime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:textAlignment="center"
+        android:text="Time  00:00"
+        ></TextView>
+    <Button
+        android:id="@+id/btnnotitest"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="notification_test"
+        android:textSize="20dp"
+        android:onClick="onClick"
+        ></Button>
 
 </LinearLayout>
