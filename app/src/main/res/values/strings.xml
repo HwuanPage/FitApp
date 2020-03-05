@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">FitApp</string>
     <string name="date_set">Set Alarm</string>
+    <string name="notich_id">channel_id</string>
 </resources>
