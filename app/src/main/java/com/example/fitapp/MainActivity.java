@@ -1,6 +1,8 @@
 package com.example.fitapp;
 
 
+
+
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -15,18 +17,19 @@ import androidx.appcompat.app.AppCompatActivity;
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
     private SensorManager sensorManager;
-    private Sensor stepCountSensor;
-    TextView tvStepCount;
+    private Sensor stepDetectorSensor;
+    TextView tvStepDetector;
+    private int mStepDetector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        tvStepCount = (TextView)findViewById(R.id.tvStepCount);
+        tvStepDetector = (TextView)findViewById(R.id.tvStepDetector);
         sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
-        stepCountSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
-        if(stepCountSensor == null) {
+        stepDetectorSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
+        if(stepDetectorSensor == null) {
             Toast.makeText(this, "No Step Detect Sensor", Toast.LENGTH_SHORT).show();
         }
     }
@@ -34,13 +37,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     protected void onResume() {
         super.onResume();
-        sensorManager.registerListener(this, stepCountSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(this, stepDetectorSensor, SensorManager.SENSOR_DELAY_UI);
     }
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        if(event.sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
-            tvStepCount.setText("Step Count : " + String.valueOf(event.values[0]));
+        if(event.sensor.getType() == Sensor.TYPE_STEP_DETECTOR) {
+            if(event.values[0] == 1.0f) {
+                mStepDetector++;
+                tvStepDetector.setText("Step Detect : " + String.valueOf(mStepDetector));
+            }
         }
     }
 
