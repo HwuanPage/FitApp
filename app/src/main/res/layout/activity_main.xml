@@ -30,10 +30,10 @@
         android:text="Time  00:00"
         ></TextView>
     <Button
-        android:id="@+id/btnnotitest"
+        android:id="@+id/btnalarmset"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="notification_test"
+        android:text="Alarm Set"
         android:textSize="20dp"
         android:onClick="onClick"
         ></Button>
