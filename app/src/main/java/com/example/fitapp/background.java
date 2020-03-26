@@ -1,39 +1,117 @@
 package com.example.fitapp;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
-public class background extends Service {
-    public background() {
+import androidx.annotation.Nullable;
+
+public class background extends Service implements SensorEventListener {
+
+    private MyBinder mMyBinder = new MyBinder();
+
+    class MyBinder extends Binder { //바인드 클래스를 생성
+        background getService() { // 서비스 객체를 리턴
+            return background.this;
+        }
     }
 
+    private int mStepDetector;
+    private StepCallback callback;
+
+    public void setCallback(StepCallback callback) {
+        this.callback = callback;
+    }
+
+    @Nullable
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        Intent showIntent = new Intent(getApplicationContext(),MainActivity.class);
-        showIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-        showIntent.putExtra("Step Detect",+1);
-        startActivity(showIntent);
-        return super.onStartCommand(intent, flags, startId);
+    public IBinder onBind(Intent intent) {
+        return mMyBinder;
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
+
+    private SensorManager sensorManager;
+    private Sensor stepDetectorSensor;
+    private Sensor stepCountSensor;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        stepDetectorSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
+        if (stepDetectorSensor == null) {
+        } else {
+            sensorManager.registerListener(this, stepCountSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        }
+// COUNTER
+        stepCountSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+        if (stepCountSensor == null) {
+        } else {
+            sensorManager.registerListener(this, stepDetectorSensor, SensorManager.SENSOR_DELAY_NORMAL);
 
+        }
+    }
+
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        stepDetectorSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
+        if (stepDetectorSensor == null) {
+        } else {
+            sensorManager.registerListener(this, stepCountSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        }
+// COUNTER
+        stepCountSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+        if (stepCountSensor == null) {
+        } else {
+            sensorManager.registerListener(this, stepDetectorSensor, SensorManager.SENSOR_DELAY_NORMAL);
+
+        }
+        return super.onStartCommand(intent, flags, startId);
+    }
+
+
+    @Override
+    public boolean onUnbind(Intent intent) {
+        unRegistManager();
+        if (callback != null)
+            callback.onUnbindService();
+        return super.onUnbind(intent);
+    }
+
+
+    public void unRegistManager() { //혹시 모를 에러상황에 트라이 캐치
+        try {
+            sensorManager.unregisterListener(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
-        throw new UnsupportedOperationException("Not yet implemented");
+    public void onSensorChanged(SensorEvent event) {
+        if (event.sensor.getType() == Sensor.TYPE_STEP_DETECTOR) {
+            if (event.values[0] == 1.0f) {
+                mStepDetector += event.values[0];
+                if (callback != null)
+                    callback.onStepCallback(mStepDetector);
+                Log.e("스텝 디텍터", "" + event.values[0]);
+            }
+        } else if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
+            Log.e("스텝 카운트", "" + event.values[0]);
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
     }
 }
