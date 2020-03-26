@@ -98,4 +98,4 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onStop();
         unbindService(serviceConnection);
     }
-}//이거 왜 안올라감
+}
