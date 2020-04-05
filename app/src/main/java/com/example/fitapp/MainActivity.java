@@ -31,14 +31,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button startBtn, endBtn,notiBtn;
     private Intent intent;
 
-    private StepCallback stepCallback = new StepCallback() {
+    private StepCallback stepCallback = new StepCallback() {        //백그라운드
         @Override
         public void onStepCallback(int step) {
             textCount.setText("" + step);
         }
 
         @Override
-        public void onUnbindService() {
+        public void onUnbindService() {                             //센서해제
             isService = false;
             statusService.setText("해제됨");
             Toast.makeText(MainActivity.this, "디스바인딩", Toast.LENGTH_SHORT).show();
@@ -70,12 +70,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
         stepService = new background();
         startBtn = findViewById(R.id.startBtn);
         endBtn = findViewById(R.id.endBtn);
         notiBtn = findViewById(R.id.notiBtn);
         textCount = findViewById(R.id.textCount);
         statusService = findViewById(R.id.textStatusService);
+
+
         setListener();
         createNotificationChannel();
 
@@ -107,11 +111,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 sndPush("FitApp","Count:");
         }
     }
-    @Override
+    /*@Override
     protected void onStop() {
         super.onStop();
         unbindService(serviceConnection);
-    }
+    }*/
     //=======================================Notification============================================//
     public void createNotificationChannel() {
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
