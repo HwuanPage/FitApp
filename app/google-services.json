@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "213801040552",
+    "firebase_url": "https://fir-2ab27.firebaseio.com",
+    "project_id": "fir-2ab27",
+    "storage_bucket": "fir-2ab27.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:213801040552:android:1804dfbdb59c5a3079609d",
+        "android_client_info": {
+          "package_name": "com.example.fitapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "213801040552-n0rvlm9vfo0qgebckmafqb819apvp1bm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkvwWki17hNOCoLZEMoWO9PvFpFmJgIEM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "213801040552-n0rvlm9vfo0qgebckmafqb819apvp1bm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
