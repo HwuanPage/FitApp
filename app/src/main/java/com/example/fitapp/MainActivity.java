@@ -1,9 +1,11 @@
 package com.example.fitapp;
 
 
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +16,7 @@ import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,12 +27,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public static final int NOTIFICATION_ID= 1;
     private NotificationManager notificationManager;
+    private long backKeyPressedTime = 0;
+    Toast toast;
 
     private background stepService;
     boolean isService = false;
     private TextView textCount, statusService;
-    private Button startBtn, endBtn,notiBtn;
+    private Button startBtn, endBtn,notiBtn,WorkoutBtn,DietBtn,WeightBtn;
     private Intent intent;
+    private float weight;
 
     private StepCallback stepCallback = new StepCallback() {        //백그라운드
         @Override
@@ -54,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             stepService.setCallback(stepCallback);
             isService = true;
             statusService.setText("연결됨");
+
         }
 
         @Override
@@ -78,6 +85,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         notiBtn = findViewById(R.id.notiBtn);
         textCount = findViewById(R.id.textCount);
         statusService = findViewById(R.id.textStatusService);
+        WeightBtn=findViewById(R.id.WeightBtn);
+        WorkoutBtn=findViewById(R.id.WorkBtn);
+        DietBtn=findViewById(R.id.DietBtn);
 
 
         setListener();
@@ -87,7 +97,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void setListener() {
         startBtn.setOnClickListener(this);
         endBtn.setOnClickListener(this);
-        notiBtn.setOnClickListener(this);
+        WeightBtn.setOnClickListener(this);
+        WorkoutBtn.setOnClickListener(this);
+        DietBtn.setOnClickListener(this);
     }
 
     @Override
@@ -109,6 +121,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.notiBtn:
                 sndPush("FitApp","Count:");
+                break;
+            case R.id.WorkBtn:
+                intent=new Intent(this,WorkoutActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.DietBtn:
+                intent=new Intent(this,DietActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.WeightBtn:
+                intent=new Intent(this,WeightActivity.class);
+                startActivity(intent);
+                break;
         }
     }
     /*@Override
@@ -136,5 +161,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setContentText(text);
 
         notificationManager.notify(NOTIFICATION_ID, builder.build());
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (System.currentTimeMillis() > backKeyPressedTime + 3000) {
+            backKeyPressedTime = System.currentTimeMillis();
+            toast=Toast.makeText(this, "\'뒤로\' 버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT);
+            toast.show();
+            return;
+        }
+        if (System.currentTimeMillis() <= backKeyPressedTime + 3000) {
+            finish();
+            toast.cancel();
+        }
     }
 }

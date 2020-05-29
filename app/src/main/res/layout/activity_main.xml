@@ -6,11 +6,18 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
     <TextView
+        android:id="@+id/textCount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="스텝카운트" />
+    <TextView
         android:id="@+id/textStatusService"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="서비스상태" />
+
     <Button
         android:id="@+id/startBtn"
         android:layout_width="match_parent"
@@ -27,10 +34,19 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:text="푸시알림"/>
-    <TextView
-        android:id="@+id/textCount"
+    <Button
+        android:id="@+id/WorkBtn"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="스텝카운트" />
+        android:layout_height="50dp"
+        android:text="운동기록" />
+    <Button
+        android:id="@+id/DietBtn"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="식단기록" />
+    <Button
+        android:id="@+id/WeightBtn"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="체중" />
 </LinearLayout>
